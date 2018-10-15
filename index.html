@@ -1,0 +1,83 @@
+<html>
+  <head>
+  <title>Provider Registration Website'</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"></script> 
+<script>
+	function submitToAPI(e) {
+       e.preventDefault();
+       var URL = "https://gfos1v8eeh.execute-api.us-east-1.amazonaws.com/staging/contactus";
+
+            var Namere = /[A-Za-z]{1}[A-Za-z]/;
+            if (!Namere.test($("#name-input").val())) {
+                         alert ("Name can not less than 2 char");
+                return;
+            }
+            var mobilere = /[0-9]{10}/;
+            if (!mobilere.test($("#phone-input").val())) {
+                alert ("Please enter valid mobile number");
+                return;
+            }
+            if ($("#email-input").val()=="") {
+                alert ("Please enter your email id");
+                return;
+            }
+
+            var reeamil = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,6})?$/;
+            if (!reeamil.test($("#email-input").val())) {
+                alert ("Please enter valid email address");
+                return;
+            }
+
+       var name = $("#name-input").val();
+       var phone = $("#phone-input").val();
+       var email = $("#email-input").val();
+       var desc = $("#description-input").val();
+	   var address = $("#address-input").val();
+       var data = {
+          name : name,
+          phone : phone,
+          email : email,
+          desc : desc,
+		  address : address
+        };
+
+       $.ajax({
+         type: "POST",
+         url : "https://gfos1v8eeh.execute-api.us-east-1.amazonaws.com/staging/contactus",
+         dataType: "json",
+         crossDomain: "true",
+         contentType: "application/json; charset=utf-8",
+         data: JSON.stringify(data),
+
+         
+         success: function () {
+           // clear form and show a success message
+           alert("Successfull");
+           document.getElementById("contact-form").reset();
+       location.reload();
+         },
+         error: function () {
+           // show an error message
+           alert("UnSuccessfull");
+         }});
+     }
+	 </script>
+	 <link rel="stylesheet" type="text/css" href="http://ws1.postescanada-canadapost.ca/css/addresscomplete-2.30.min.css?key=xm52-pm91-gx73-ab76" /><script type="text/javascript" src="http://ws1.postescanada-canadapost.ca/js/addresscomplete-2.30.min.js?key=xm52-pm91-gx73-ab76"></script>
+  </head>
+<body><h1>Provider Registration Website</h1>
+
+<form id="contact-form" method="post">
+      <h4>Name:</h4>
+      <input type="text" style="height:30px;" id="name-input" placeholder="Enter name here…" class="form-control" style="width:100%;" /><br/>
+      <h4>Phone:</h4>
+      <input type="phone" style="height:30px;" id="phone-input" placeholder="Enter phone number" class="form-control" style="width:100%;"/><br/>
+      <h4>Email:</h4>
+      <input type="email" style="height:30px;" id="email-input" placeholder="Enter email here…" class="form-control" style="width:100%;"/><br/>
+	  <h4>Address</h4>
+      <input type="address" style="height:30px;" id="address-input" placeholder="Enter address here" class="form-control" style="width:200%;"/><br/>
+      <h4>Other Details</h4>
+      <textarea id="description-input" rows="3" placeholder="Enter your message…" class="form-control" style="width:100%;"></textarea><br/>
+      <div class="g-recaptcha" data-sitekey="6Lc7cVMUAAAAAM1yxf64wrmO8gvi8A1oQ_ead1ys" class="form-control" style="width:100%;"></div>
+      <button type="button" onClick="submitToAPI(event)" class="btn btn-lg" style="margin-top:20px;">Submit</button>
+</form>
+</html>
